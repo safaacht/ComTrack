@@ -2,7 +2,8 @@ package com.comtrack.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
-import com.comtrack.enums.Fonction;
+import com.comtrack.entity.Fonction;
+import java.util.List;
 
 @Entity
 public class Commercial {
@@ -17,6 +18,14 @@ public class Commercial {
     @Enumerated(EnumType.STRING)
     private Fonction fonction;
 
+    //relations
+    @OneToMany(mappedBy="commercial")
+    private List<Client> clients;
+
+    @OneToOne(mappedBy="commercial")
+    private User user;
+
+    //COnstructors
     public Commercial(){}
 
     public Commercial(String nom, String prenom,
@@ -64,6 +73,14 @@ public class Commercial {
 
     public void setFonction(Fonction fonction) {
         this.fonction = fonction;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }
