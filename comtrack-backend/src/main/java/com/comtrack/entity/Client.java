@@ -2,6 +2,7 @@ package com.comtrack.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Client {
@@ -10,7 +11,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nom;
+    private String nomContact;
 
     private String email;
 
@@ -20,16 +21,21 @@ public class Client {
 
     private LocalDateTime createdAt;
 
+
+    //relations
     @ManyToOne
     @JoinColumn(name = "commercial_id")
     private Commercial commercial;
+
+    @OneToMany(mappedBy="client")
+    private List <Activite> activites;
 
 
     // constructors
     public Client() {}
 
     public Client(String nom, String email, String phone,String societe) {
-        this.nom = nom;
+        this.nomContact = nom;
         this.email = email;
         this.phone = phone;
         this.societe=societe;
@@ -45,12 +51,12 @@ public class Client {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getNomContact() {
+        return nomContact;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomContact(String nomContact) {
+        this.nomContact = nomContact;
     }
 
     public String getEmail() {
@@ -76,4 +82,12 @@ public class Client {
     public void setSociete(String societe) {
         this.societe = societe;
     }
+
+    public Commercial getCommercial(){return commercial;}
+
+    public void setCommercial(Commercial commercial){this.commercial=commercial;}
+
+    public  List<Activite>  getActivite(){return activites;}
+
+    public void setActivite( List<Activite> activites ){this.activites=activites;}
 }
