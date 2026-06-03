@@ -1,7 +1,7 @@
 package com.comtrack.entity;
 
 import jakarta.persistence.*;
-import com.comtrack.enums.Role;
+import com.comtrack.entity.Role;
 
 @Entity
 public class User {
@@ -17,6 +17,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    //relatoins
+    @OneToOne
+    @JoinColumn(name ="commercail_id")
+    private Commercial commercial;
 
     // Constructor
     public User() {
@@ -76,5 +82,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Commercial getCommercial() {
+        return commercial;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercial = commercial;
     }
 }
