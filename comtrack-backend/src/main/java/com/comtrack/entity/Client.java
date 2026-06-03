@@ -20,6 +20,9 @@ public class Client {
 
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "commercial_id")
+    private Commercial commercial;
 
 
     // constructors
