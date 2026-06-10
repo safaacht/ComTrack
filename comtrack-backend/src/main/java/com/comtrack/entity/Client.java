@@ -2,34 +2,47 @@ package com.comtrack.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name="clients")
+
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    private String nom;
+    @Column(nullable=false , unique=true)
+    private String nomContact;
 
+    @Column(nullable=false , unique=true)
     private String email;
 
+    @Column(nullable=false , unique=true)
     private String phone;
 
+    @Column(nullable=false)
     private String societe;
 
+    @Column(nullable=false)
     private LocalDateTime createdAt;
 
+
+    //relations
     @ManyToOne
     @JoinColumn(name = "commercial_id")
     private Commercial commercial;
+
+    @OneToMany(mappedBy="client")
+    private List <Activite> activites;
 
 
     // constructors
     public Client() {}
 
     public Client(String nom, String email, String phone,String societe) {
-        this.nom = nom;
+        this.nomContact = nom;
         this.email = email;
         this.phone = phone;
         this.societe=societe;
@@ -37,20 +50,20 @@ public class Client {
     }
 
     // getters and setters
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getNomContact() {
+        return nomContact;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNomContact(String nomContact) {
+        this.nomContact = nomContact;
     }
 
     public String getEmail() {
@@ -76,4 +89,12 @@ public class Client {
     public void setSociete(String societe) {
         this.societe = societe;
     }
+
+    public Commercial getCommercial(){return commercial;}
+
+    public void setCommercial(Commercial commercial){this.commercial=commercial;}
+
+    public  List<Activite>  getActivite(){return activites;}
+
+    public void setActivite( List<Activite> activites ){this.activites=activites;}
 }

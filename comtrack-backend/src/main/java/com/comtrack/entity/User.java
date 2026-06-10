@@ -1,22 +1,37 @@
 package com.comtrack.entity;
 
 import jakarta.persistence.*;
-import com.comtrack.enums.Role;
+import com.comtrack.entity.Role;
 
 @Entity
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
+    @Column(nullable=false)
     private String nom;
+
+    @Column(nullable=false)
     private String prenom;
+
+    @Column(nullable=false , unique=true)
     private String email;
+
+    @Column(nullable=false , unique=true)
     private String password;
 
+    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    //relatoins
+    @OneToOne
+    @JoinColumn(name ="commercial_id")
+    private Commercial commercial;
 
     // Constructor
     public User() {
@@ -34,7 +49,7 @@ public class User {
 
     // Getters & Setters
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -76,5 +91,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Commercial getCommercial() {
+        return commercial;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercial = commercial;
     }
 }
