@@ -57,6 +57,7 @@ public class AdminController {
 
     //getting all admins
 
+
     @GetMapping("/admins")
     public List<User> getAdmins() {
         return userService.getUsersByRole(Role.ADMIN);
