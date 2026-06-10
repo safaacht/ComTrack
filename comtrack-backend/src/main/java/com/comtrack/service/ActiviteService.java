@@ -1,0 +1,48 @@
+package com.comtrack.service;
+
+import com.comtrack.entity.Activite;
+import com.comtrack.repository.ActiviteRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ActiviteService {
+
+    private final ActiviteRepository activiteRepository;
+
+    public ActiviteService(ActiviteRepository activiteRepository) {
+        this.activiteRepository = activiteRepository;
+    }
+
+    public List<Activite> getAllActivities() {
+        return activiteRepository.findAll();
+    }
+
+    public Activite createActivity(Activite activite) {
+
+        activite.setDate(LocalDateTime.now());
+
+        return activiteRepository.save(activite);
+    }
+
+    public void deleteActivity(Long id) {
+        activiteRepository.deleteById(id);
+    }
+
+    public List<Activite> getActivitiesByClient(Long clientId) {
+        return activiteRepository.findByClientId(clientId);
+    }
+
+    public Activite updateActivity(Long id, Activite updatedActivity) {
+
+        Activite existing = activiteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activite introuvable"));
+
+        existing.setType(updatedActivity.getType());
+        existing.setDescription(updatedActivity.getDescription());
+        existing.setStatut(updatedActivity.getStatut());
+        existing.setClient(updatedActivity.getClient());
+        existing.setCommercial(updatedActivity.getCommercial());
+
+        return activiteRepository.save(existing);
+    }
+}
