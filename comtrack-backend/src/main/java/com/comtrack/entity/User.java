@@ -4,24 +4,33 @@ import jakarta.persistence.*;
 import com.comtrack.entity.Role;
 
 @Entity
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
+    @Column(nullable=false)
     private String nom;
+
+    @Column(nullable=false)
     private String prenom;
+
+    @Column(nullable=false , unique=true)
     private String email;
+
+    @Column(nullable=false , unique=true)
     private String password;
 
+    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
 
     //relatoins
     @OneToOne
-    @JoinColumn(name ="commercail_id")
+    @JoinColumn(name ="commercial_id")
     private Commercial commercial;
 
     // Constructor
@@ -40,7 +49,7 @@ public class User {
 
     // Getters & Setters
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

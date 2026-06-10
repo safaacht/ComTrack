@@ -5,20 +5,27 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name="clients")
+
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
+    @Column(nullable=false , unique=true)
     private String nomContact;
 
+    @Column(nullable=false , unique=true)
     private String email;
 
+    @Column(nullable=false , unique=true)
     private String phone;
 
+    @Column(nullable=false)
     private String societe;
 
+    @Column(nullable=false)
     private LocalDateTime createdAt;
 
 
@@ -43,11 +50,11 @@ public class Client {
     }
 
     // getters and setters
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

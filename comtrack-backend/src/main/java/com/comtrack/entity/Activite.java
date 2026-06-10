@@ -5,17 +5,25 @@ import jakarta.persistence.GeneratedValue;
 import java.time.LocalDate;
 
 @Entity
+@Table(name="activites")
+
 public class Activite {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 
     private long id ;
+
+    @Column(nullable=false)
     private String description;
+
+    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @Column(nullable=false)
     private LocalDate date;
 
+    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private Statut statut;
 

@@ -6,15 +6,23 @@ import com.comtrack.entity.Fonction;
 import java.util.List;
 
 @Entity
+@Table(name="commerciaux")
+
 public class Commercial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable=false)
     private String nom;
+
+    @Column(nullable=false)
     private String prenom;
+
+    @Column(nullable=false , unique=true)
     private String phone;
 
+    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private Fonction fonction;
 
@@ -39,7 +47,7 @@ public class Commercial {
 
     // Getters & Setters
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
