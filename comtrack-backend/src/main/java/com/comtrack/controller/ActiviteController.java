@@ -40,6 +40,7 @@ public class ActiviteController {
             @PathVariable Long id,
             @RequestBody Activite activite) {
 
+
         return activiteService.updateActivity(id, activite);
     }
 }
