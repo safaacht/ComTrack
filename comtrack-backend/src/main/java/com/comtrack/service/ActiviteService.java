@@ -3,7 +3,7 @@ package com.comtrack.service;
 import com.comtrack.entity.Activite;
 import com.comtrack.repository.ActiviteRepository;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
+import java.time.LocalDate ;
 import java.util.List;
 
 @Service
@@ -46,4 +46,5 @@ public class ActiviteService {
 
         return activiteRepository.save(existing);
     }
+
 }
