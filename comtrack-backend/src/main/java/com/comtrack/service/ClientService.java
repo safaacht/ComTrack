@@ -24,4 +24,22 @@ public class ClientService {
 
         return clientRepository.save(client);
     }
+
+    public Client getClientById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+    }
+
+    public Client updateClient(Long id, Client clientDetails) {
+        Client client = getClientById(id);
+        client.setNomContact(clientDetails.getNomContact());
+        client.setEmail(clientDetails.getEmail());
+        client.setPhone(clientDetails.getPhone());
+        client.setSociete(clientDetails.getSociete());
+        return clientRepository.save(client);
+    }
+
+    public void deleteClient(Long id) {
+        clientRepository.deleteById(id);
+    }
 }
