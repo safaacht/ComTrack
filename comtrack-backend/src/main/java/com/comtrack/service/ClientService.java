@@ -19,9 +19,6 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
-
-        client.setCreatedAt(LocalDateTime.now());
-
         return clientRepository.save(client);
     }
 
