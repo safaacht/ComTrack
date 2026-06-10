@@ -26,7 +26,7 @@ public class ActiviteService {
         return activiteRepository.save(activite);
     }
 
-    public void deleteActivity(Long id) {
+    public void deleteActivity(long id) {
         activiteRepository.deleteById(id);
     }
 
