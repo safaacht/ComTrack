@@ -35,6 +35,7 @@ public class CommercialController {
         return commercialService.updateCommercial(id,commercial);
     }
 
+
     @DeleteMapping("/{id}")
     public void deleteCommercial(@PathVariable Long id){
          commercialService.deleteCommercial(id);
