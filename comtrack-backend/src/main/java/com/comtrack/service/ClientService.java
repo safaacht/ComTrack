@@ -19,15 +19,13 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
-
-        client.setCreatedAt(LocalDateTime.now());
-
         return clientRepository.save(client);
     }
 
     public Client getClientById(Long id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+
     }
 
     public Client updateClient(Long id, Client clientDetails) {
