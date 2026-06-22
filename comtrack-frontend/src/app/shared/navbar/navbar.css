@@ -5,7 +5,9 @@
   background-color: #0a172c;
   color: white;
 }
-
+.logo{
+  color: rgb(218, 38, 38);
+}
 .links {
   display: flex;
   gap: 15px;
