@@ -1,0 +1,75 @@
+<div class="page">
+
+  <div class="header">
+    <h1>Commercials Management</h1>
+
+    <button class="add-btn" (click)="openAdd()">
+      + Add Commercial
+    </button>
+  </div>
+  @if (isAddOpen) {
+    <div class="modal-overlay">
+      <div class="modal">
+
+        <h2>Add Commercial</h2>
+
+        <input [(ngModel)]="newCommercial.firstName" placeholder="First Name" />
+        <input [(ngModel)]="newCommercial.lastName" placeholder="Last Name" />
+        <input [(ngModel)]="newCommercial.email" placeholder="Email" />
+        <input [(ngModel)]="newCommercial.phone" placeholder="Phone" />
+
+        <div class="modal-actions">
+          <button class="addButton" (click)="addCommercial()">Add</button>
+          <button class="cancelButton" (click)="isAddOpen = false">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (c of commercials; track c.id) {
+        <tr>
+          <td>{{ c.firstName }} {{ c.lastName }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.phone }}</td>
+          <td>
+            <button class="edit" (click)="openEdit(c)">Edit</button>
+            <button class="delete" (click)="deleteCommercial(c.id)">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+
+  </table>
+  @if (isEditOpen) {
+  <div class="modal-overlay">
+    <div class="modal">
+
+      <h2>Edit Commercial</h2>
+
+      <input [(ngModel)]="selectedCommercial.firstName" placeholder="First Name" />
+      <input [(ngModel)]="selectedCommercial.lastName" placeholder="Last Name" />
+      <input [(ngModel)]="selectedCommercial.email" placeholder="Email" />
+      <input [(ngModel)]="selectedCommercial.phone" placeholder="Phone" />
+
+      <div class="modal-actions">
+        <button class="saveButton" (click)="saveEdit()">Save</button>
+        <button class="cancelButton" (click)="isEditOpen = false">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+}
+
+</div>
