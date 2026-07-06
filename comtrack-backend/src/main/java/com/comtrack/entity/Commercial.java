@@ -40,12 +40,13 @@ public class Commercial {
     public Commercial(){}
 
     public Commercial(String nom, String prenom,
-                      String phone,String email, Fonction fonction){
+                      String phone, String email,Fonction fonction){
 
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.phone = phone;
+        this.email = email;
         this.fonction = fonction;
     }
 
@@ -67,6 +68,14 @@ public class Commercial {
         return prenom;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
@@ -75,13 +84,6 @@ public class Commercial {
         return phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 
     public void setPhone(String phone) {
         this.phone = phone;
