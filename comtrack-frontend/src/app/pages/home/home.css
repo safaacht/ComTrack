@@ -1,0 +1,119 @@
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  
+}
+
+.buttons a {
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.buttons a:first-child {
+  background-color: white;
+  color: #1e293b;
+}
+
+.buttons a:last-child {
+  background-color: rgb(218, 38, 38);
+  color: white;
+}
+
+.buttons a:hover {
+  transform: translateY(-2px);
+}
+
+/* Features Section */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 70px 20px;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  width: 300px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: white;
+  text-align: center;
+}
+
+.feature-card h3 {
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 50px 20px;
+  background-color: #f8fafc;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  text-align: center;
+  min-width: 180px;
+}
+
+.stat-card h2 {
+  font-size: 2.5rem;
+  color: #0a172c;
+}
+
+.stat-card p {
+  color: #64748b;
+}
+
+/* CTA Section */
+.cta {
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.cta h2 {
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.cta a {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: rgb(218, 38, 38);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.cta a:hover {
+  opacity: 0.9;
+}

@@ -1,6 +1,8 @@
 <nav class="navbar">
-  <div class="logo">ComTrack</div>
-
+  <!-- <div >ComTrack</div> -->
+   <a routerLink="/" style="text-decoration: none; color: inherit;">
+     <h1>Com<span class="logo">Track</span></h1>
+   </a>
   <ul class="links">
     <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/dashboard">Dashboard</a>
@@ -10,8 +12,12 @@
       <a routerLink="/clients">Clients</a>
     </li>
 
-    <li>
-      <a routerLink="/login">Logout</a>
+    <li  routerLinkActive="active">
+      <a routerLink="/signup">Signup</a>
+    </li>
+
+    <li  routerLinkActive="active">
+      <a routerLink="/login">Login</a>
     </li>
   </ul>
 </nav>
