@@ -1,0 +1,98 @@
+.footer {
+  background-color: #0a172c;
+  color: #e5e7eb;
+  padding: 20px 40px 10px;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  margin-top: auto;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid #333;
+  padding-bottom: 20px;
+}
+
+/* Column 1: Brand */
+.footer-logo {
+  width: 290px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+/* Column 2: Contact Info */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.contact-item.align-top {
+  align-items: flex-start;
+}
+
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Column 3: Actions */
+.action-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.social-section p {
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #333;
+  color: white;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.social-link:hover {
+  background-color: #444;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  text-align: center;
+  padding-top: 10px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Responsive adjust for smaller screens */
+@media (max-width: 900px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
