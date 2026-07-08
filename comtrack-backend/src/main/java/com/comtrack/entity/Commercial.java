@@ -16,11 +16,14 @@ public class Commercial {
     @Column(nullable=false)
     private String nom;
 
-    @Column(nullable=false)
+    @Column(nullable=false , unique= true)
     private String prenom;
 
     @Column(nullable=false , unique=true)
     private String phone;
+
+    @Column(nullable=false , unique= true)
+    private String email;
 
     @Column(nullable=false)
     @Enumerated(EnumType.STRING)
@@ -37,10 +40,11 @@ public class Commercial {
     public Commercial(){}
 
     public Commercial(String nom, String prenom,
-                      String phone, Fonction fonction){
+                      String phone,String email, Fonction fonction){
 
         this.nom = nom;
         this.prenom = prenom;
+        this.email = email;
         this.phone = phone;
         this.fonction = fonction;
     }
@@ -69,6 +73,14 @@ public class Commercial {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setPhone(String phone) {
