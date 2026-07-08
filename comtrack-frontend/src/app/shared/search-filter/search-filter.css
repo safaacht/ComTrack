@@ -1,0 +1,29 @@
+.search-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-filter input,
+.search-filter select {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-width: 220px;
+}
+
+.search-filter button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.search-filter button:hover {
+  background-color: #1d4ed8;
+}

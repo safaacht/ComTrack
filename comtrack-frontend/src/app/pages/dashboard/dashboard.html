@@ -41,42 +41,154 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td>Sarah</td>
-            <td>Tesla</td>
-            <td>Call</td>
-            <td>2026-06-22</td>
-            <td><span class="done">Done</span></td>
-          </tr>
-
-          <tr>
-            <td>Yassine</td>
-            <td>Samsung</td>
-            <td>Visit</td>
-            <td>2026-06-21</td>
-            <td><span class="pending">Pending</span></td>
-          </tr>
-
-          <tr>
-            <td>Hamza</td>
-            <td>Marjane</td>
-            <td>Visit</td>
-            <td>2026-06-21</td>
-            <td><span class="canceled">Canceled</span></td>
-          </tr>
+          @for (a of paginatedActivities; track a.id) {
+            <tr>
+              <td>{{ a.client }}</td>
+              <td>{{ a.society }}</td>
+              <td>{{ a.type }}</td>
+              <td>{{ a.date }}</td>
+              <td><span [class]="a.statusClass">{{ a.status }}</span></td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 20px;">No activities found.</td>
+            </tr>
+          }
         </tbody>
       </table>
+
+      <!-- Activities Pagination -->
+      <div class="pagination">
+        <button (click)="prevActivityPage()" [disabled]="activityPage === 1">Previous</button>
+        <span>Page {{ activityPage }} of {{ activityTotalPages || 1 }}</span>
+        <button (click)="nextActivityPage()" [disabled]="activityPage >= activityTotalPages">Next</button>
+      </div>
     </div>
 
     <!-- QUICK ACTIONS -->
     <div class="actions">
       <h2>Quick Actions</h2>
 
-      <button>Add Client</button>
-      <button>Add Activity</button>
-      <button>View Reports</button>
+      <button (click)="goToClients()" style="background-color: #ef4444; color: white; border: none;">Add Client</button>
+      <button (click)="openAddActivity()">Add Activity</button>
+      <button (click)="viewReports()">View Reports</button>
+    </div>
+
+    <!-- COMMERCIALS SECTION -->
+    <div class="table-section commercials-section">
+      <div class="section-header">
+        <h2>Commercials Management</h2>
+        <button class="add-btn" (click)="openAdd()">+ Add Commercial</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of paginatedCommercials; track c.id) {
+            <tr>
+              <td>{{ c.firstName }} {{ c.lastName }}</td>
+              <td>{{ c.email }}</td>
+              <td>{{ c.phone }}</td>
+              <td>
+                <span [class]="c.status === 'Active' ? 'status done' : 'status canceled'">
+                  {{ c.status }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button class="edit" (click)="openEdit(c)">Edit</button>
+                <button class="delete" (click)="deleteCommercial(c.id)">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px;">No commercials found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages || 1 }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+      </div>
     </div>
 
   </div>
+
+  @if (isAddOpen) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h2>Add Commercial</h2>
+        <input [(ngModel)]="newCommercial.firstName" placeholder="First Name" />
+        <input [(ngModel)]="newCommercial.lastName" placeholder="Last Name" />
+        <input [(ngModel)]="newCommercial.email" placeholder="Email" />
+        <input [(ngModel)]="newCommercial.phone" placeholder="Phone" />
+        <select [(ngModel)]="newCommercial.status">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <div class="modal-actions">
+          <button class="saveButton" (click)="addCommercial()">Add</button>
+          <button class="cancelButton" (click)="isAddOpen = false">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isEditOpen) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h2>Edit Commercial</h2>
+        <input [(ngModel)]="selectedCommercial.firstName" placeholder="First Name" />
+        <input [(ngModel)]="selectedCommercial.lastName" placeholder="Last Name" />
+        <input [(ngModel)]="selectedCommercial.email" placeholder="Email" />
+        <input [(ngModel)]="selectedCommercial.phone" placeholder="Phone" />
+        <select [(ngModel)]="selectedCommercial.status">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <div class="modal-actions">
+          <button class="saveButton" (click)="saveEdit()">Save</button>
+          <button class="cancelButton" (click)="isEditOpen = false">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isActivityAddOpen) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h2>Add Activity</h2>
+        <input [(ngModel)]="newActivity.client" placeholder="Client Name" />
+        <input [(ngModel)]="newActivity.society" placeholder="Society" />
+        <select [(ngModel)]="newActivity.type" class="modal-select">
+          <option value="Call">Call</option>
+          <option value="Visit">Visit</option>
+          <option value="Email">Email</option>
+          <option value="Meeting">Meeting</option>
+        </select>
+        <input [(ngModel)]="newActivity.date" type="date" />
+        <select [(ngModel)]="newActivity.status" (change)="updateActivityStatusClass()" class="modal-select">
+          <option value="Pending">Pending</option>
+          <option value="Done">Done</option>
+          <option value="Canceled">Canceled</option>
+        </select>
+        <div class="modal-actions">
+          <button class="saveButton" (click)="addActivity()">Add</button>
+          <button class="cancelButton" (click)="isActivityAddOpen = false">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
 
 </div>
