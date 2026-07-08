@@ -19,6 +19,9 @@ public class Commercial {
     @Column(nullable=false)
     private String prenom;
 
+    @Column(nullable=false)
+    private String email;
+
     @Column(nullable=false , unique=true)
     private String phone;
 
@@ -37,11 +40,12 @@ public class Commercial {
     public Commercial(){}
 
     public Commercial(String nom, String prenom,
-                      String phone, Fonction fonction){
+                      String phone, String email,Fonction fonction){
 
         this.nom = nom;
         this.prenom = prenom;
         this.phone = phone;
+        this.email = email;
         this.fonction = fonction;
     }
 
@@ -61,6 +65,14 @@ public class Commercial {
 
     public String getPrenom() {
         return prenom;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setPrenom(String prenom) {
