@@ -115,7 +115,11 @@ export class Dashboard {
       },
       error: (err) => {
         console.error('Error adding commercial:', err);
-        alert('Failed to add commercial. Check console for details.');
+        if (err.status === 500) {
+          alert('Failed to add commercial: A commercial with this phone number might already exist! Please try a unique phone number.');
+        } else {
+          alert('Failed to add commercial. Check console for details.');
+        }
       }
     });
   }
@@ -138,7 +142,11 @@ export class Dashboard {
       },
       error: (err) => {
         console.error('Error updating commercial:', err);
-        alert('Failed to update commercial. Check console for details.');
+        if (err.status === 500) {
+          alert('Failed to update commercial: A commercial with this phone number might already exist!');
+        } else {
+          alert('Failed to update commercial. Check console for details.');
+        }
       }
     });
   }
