@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommercialService } from '../../services/commercial.service';
+import { Commercial } from '../../models/commercial';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,16 +13,13 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  constructor(private router: Router) {}
+  constructor(
+  private router: Router,
+  private commercialService: CommercialService
+  ){}
 
   // Commercials data
-  commercials = [
-    { id: 1, firstName: 'Ahmed', lastName: 'Bennani', email: 'ahmed@test.com', phone: '0600000000', status: 'Active' },
-    { id: 2, firstName: 'Sara', lastName: 'Alaoui', email: 'sara@test.com', phone: '0611111111', status: 'Inactive' },
-    { id: 3, firstName: 'Youssef', lastName: 'Naciri', email: 'youssef@test.com', phone: '0622222222', status: 'Active' },
-    { id: 4, firstName: 'Kenza', lastName: 'Idrissi', email: 'kenza@test.com', phone: '0633333333', status: 'Active' },
-    { id: 5, firstName: 'Leila', lastName: 'Radi', email: 'leila@test.com', phone: '0644444444', status: 'Active' }
-  ];
+  commercials: Commercial[] = [];
 
   // Activities data
   activities = [
@@ -35,7 +34,27 @@ export class Dashboard {
   isEditOpen = false;
   isAddOpen = false;
 
-  newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+ newCommercial: Commercial = {
+  nom: '',
+  prenom: '',
+  email: '',
+  phone: '',
+  fonction: 'JUNIOR'
+};
+
+  ngOnInit() {
+  this.loadCommercials();
+}
+
+  loadCommercials() {
+  this.commercialService.getAll().subscribe({
+    next: (data) => {
+      console.log("Commercials:", data);
+      this.commercials = data;
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   // Commercials Pagination
   currentPage = 1;
@@ -81,17 +100,17 @@ export class Dashboard {
 
   openAdd() {
     this.isAddOpen = true;
-    this.newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+    this.newCommercial = { id: 0, prenom: '', nom: '', email: '', phone: '', fonction: 'JUNIOR' };
   }
 
   addCommercial() {
     const newId = this.commercials.length
-      ? Math.max(...this.commercials.map(c => c.id)) + 1
+      ? Math.max(...this.commercials.map(c => c.id ??0))
       : 1;
 
     this.commercials.unshift({ ...this.newCommercial, id: newId });
     this.isAddOpen = false;
-    this.newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+    this.newCommercial = {id: 0,prenom: '',nom: '',email: '',phone: '',fonction: 'JUNIOR' };
   }
 
   openEdit(commercial: any) {
