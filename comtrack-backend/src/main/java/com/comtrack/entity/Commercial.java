@@ -19,7 +19,7 @@ public class Commercial {
     @Column(nullable=false , unique= true)
     private String prenom;
 
-    @Column(nullable=false)
+    @Column(nullable=false, unique=true)
     private String email;
 
     @Column(nullable=false , unique=true)
