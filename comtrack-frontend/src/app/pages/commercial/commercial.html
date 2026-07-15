@@ -30,8 +30,8 @@
               *ngFor="let client of filteredClients()"
               (click)="selectClient(client)">
 
-              <strong>{{client.firstName}} {{client.lastName}}</strong>
-              <small>{{client.company}}</small>
+              <strong>{{client.nomContact}}</strong>
+              <small>{{client.societe}}</small>
 
             </div>
 

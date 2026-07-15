@@ -1,10 +1,7 @@
 export interface Client {
   id?: number;
-  firstName: string;
-  lastName: string;
-  company: string;
-  city: string;
+  nomContact: string;
+  societe: string;
   email: string;
   phone: string;
-  status: string;
 }
