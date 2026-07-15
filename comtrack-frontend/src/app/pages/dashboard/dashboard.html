@@ -94,17 +94,17 @@
         <tbody>
           @for (c of paginatedCommercials; track c.id) {
             <tr>
-              <td>{{ c.firstName }} {{ c.lastName }}</td>
+              <td>{{ c.nom }} {{ c.prenom }}</td>
               <td>{{ c.email }}</td>
               <td>{{ c.phone }}</td>
               <td>
-                <span [class]="c.status === 'Active' ? 'status done' : 'status canceled'">
-                  {{ c.status }}
+                <span [class]="c.fonction === 'JUNIOR' ? 'status done' : 'status canceled'">
+                  {{ c.fonction }}
                 </span>
               </td>
               <td class="actions-cell">
                 <button class="edit" (click)="openEdit(c)">Edit</button>
-                <button class="delete" (click)="deleteCommercial(c.id)">Delete</button>
+                <button class="delete" (click)="deleteCommercial(c.id!)">Delete</button>
               </td>
             </tr>
           } @empty {
@@ -129,13 +129,13 @@
     <div class="modal-overlay">
       <div class="modal">
         <h2>Add Commercial</h2>
-        <input [(ngModel)]="newCommercial.firstName" placeholder="First Name" />
-        <input [(ngModel)]="newCommercial.lastName" placeholder="Last Name" />
+        <input [(ngModel)]="newCommercial.prenom" placeholder="First Name" />
+        <input [(ngModel)]="newCommercial.nom" placeholder="Last Name" />
         <input [(ngModel)]="newCommercial.email" placeholder="Email" />
         <input [(ngModel)]="newCommercial.phone" placeholder="Phone" />
-        <select [(ngModel)]="newCommercial.status">
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
+        <select [(ngModel)]="newCommercial.fonction">
+          <option value="Active">JUNIOR</option>
+          <option value="Inactive">SENIOR</option>
         </select>
         <div class="modal-actions">
           <button class="saveButton" (click)="addCommercial()">Add</button>
@@ -149,11 +149,11 @@
     <div class="modal-overlay">
       <div class="modal">
         <h2>Edit Commercial</h2>
-        <input [(ngModel)]="selectedCommercial.firstName" placeholder="First Name" />
-        <input [(ngModel)]="selectedCommercial.lastName" placeholder="Last Name" />
+        <input [(ngModel)]="selectedCommercial.prenom" placeholder="First Name" />
+        <input [(ngModel)]="selectedCommercial.nom" placeholder="Last Name" />
         <input [(ngModel)]="selectedCommercial.email" placeholder="Email" />
         <input [(ngModel)]="selectedCommercial.phone" placeholder="Phone" />
-        <select [(ngModel)]="selectedCommercial.status">
+        <select [(ngModel)]="selectedCommercial.fonction">
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
