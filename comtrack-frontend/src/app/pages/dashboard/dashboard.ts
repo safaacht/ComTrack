@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +15,8 @@ import { Commercial } from '../../models/commercial';
 export class Dashboard {
   constructor(
   private router: Router,
-  private commercialService: CommercialService
+  private commercialService: CommercialService,
+  private cdr: ChangeDetectorRef
   ){}
 
   // Commercials data
@@ -51,6 +52,7 @@ export class Dashboard {
     next: (data) => {
       console.log("Commercials:", data);
       this.commercials = data;
+      this.cdr.markForCheck();
     },
     error: (err) => console.error(err)
   });
@@ -109,6 +111,7 @@ export class Dashboard {
         this.commercials.unshift(data);
         this.isAddOpen = false;
         this.newCommercial = { prenom: '', nom: '', email: '', phone: '', fonction: 'JUNIOR' };
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error adding commercial:', err);
@@ -131,6 +134,7 @@ export class Dashboard {
           this.commercials[index] = updatedCommercial;
         }
         this.isEditOpen = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error updating commercial:', err);
@@ -147,6 +151,7 @@ export class Dashboard {
           if (this.currentPage > this.totalPages && this.totalPages > 0) {
             this.currentPage = this.totalPages;
           }
+          this.cdr.markForCheck();
         },
         error: (err) => {
           console.error('Error deleting commercial:', err);
