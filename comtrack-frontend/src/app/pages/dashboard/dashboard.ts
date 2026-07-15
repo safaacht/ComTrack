@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommercialService } from '../../services/commercial.service';
+import { ClientService } from '../../services/client.service';
 import { Commercial } from '../../models/commercial';
 
 @Component({
@@ -16,11 +17,14 @@ export class Dashboard {
   constructor(
   private router: Router,
   private commercialService: CommercialService,
+  private clientService: ClientService,
   private cdr: ChangeDetectorRef
   ){}
 
   // Commercials data
   commercials: Commercial[] = [];
+
+  clientsCount = 0;
 
   // Activities data
   activities = [
@@ -45,6 +49,7 @@ export class Dashboard {
 
   ngOnInit() {
   this.loadCommercials();
+  this.loadClientsCount();
 }
 
   loadCommercials() {
@@ -57,6 +62,16 @@ export class Dashboard {
     error: (err) => console.error(err)
   });
 }
+
+  loadClientsCount() {
+    this.clientService.getAll().subscribe({
+      next: (data) => {
+        this.clientsCount = data.length;
+        this.cdr.markForCheck();
+      },
+      error: (err) => console.error(err)
+    });
+  }
 
   // Commercials Pagination
   currentPage = 1;

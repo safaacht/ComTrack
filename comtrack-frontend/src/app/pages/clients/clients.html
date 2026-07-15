@@ -70,17 +70,17 @@
 
       <div class="clients-list">
         <div class="client-item" *ngFor="let c of filteredClients">
-          <div class="avatar">{{c.firstName.charAt(0)}}{{c.lastName ? c.lastName.charAt(0) : ''}}</div>
+          <div class="avatar">{{c.nomContact.charAt(0)}}</div>
           <div class="client-info">
-            <h3>{{c.firstName}} {{c.lastName}}</h3>
-            <p>{{c.company || 'No Company'}}</p>
+            <h3>{{c.nomContact}}</h3>
+            <p>{{c.societe || 'No Company'}}</p>
           </div>
           <div class="client-contact">
             <p><span>✉️</span> {{c.email || 'N/A'}}</p>
             <p><span>📞</span> {{c.phone || 'N/A'}}</p>
           </div>
           <div class="client-status">
-            <span class="status-badge" [class.active]="c.status === 'Active'">{{c.status}}</span>
+            <span class="status-badge active">Active</span>
           </div>
         </div>
 

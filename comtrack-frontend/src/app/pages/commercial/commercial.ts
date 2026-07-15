@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ClientService } from '../../services/client.service';
+import { Client } from '../../models/clients';
 
 @Component({
   selector: 'app-commercial',
@@ -9,7 +11,21 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './commercial.html',
   styleUrls: ['./commercial.css']
 })
-export class Commercial {
+export class Commercial implements OnInit {
+  constructor(private clientService: ClientService) {}
+
+  ngOnInit() {
+    this.loadClients();
+  }
+
+  loadClients() {
+    this.clientService.getAll().subscribe({
+      next: (data) => {
+        this.clients = data;
+      },
+      error: (err) => console.error('Error fetching clients', err)
+    });
+  }
 
   /* =======================
       SEARCH
@@ -30,38 +46,7 @@ export class Commercial {
 
   clientSearch = '';
 
-  clients = [
-    {
-      id: 1,
-      firstName: 'Ali',
-      lastName: 'Benali',
-      company: 'Orange Maroc',
-      city: 'Casablanca',
-      email: 'ali@orange.ma',
-      phone: '0611111111',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      firstName: 'Sara',
-      lastName: 'Amrani',
-      company: 'MicroData',
-      city: 'Rabat',
-      email: 'sara@microdata.ma',
-      phone: '0622222222',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      firstName: 'Ahmed',
-      lastName: 'Alaoui',
-      company: 'Inwi',
-      city: 'Marrakech',
-      email: 'ahmed@inwi.ma',
-      phone: '0633333333',
-      status: 'Inactive'
-    }
-  ];
+  clients: Client[] = [];
 
   /* =======================
       SELECTED CLIENT
@@ -139,16 +124,15 @@ export class Commercial {
 
   filteredClients() {
     return this.clients.filter(c =>
-      c.firstName.toLowerCase().includes(this.clientSearch.toLowerCase()) ||
-      c.lastName.toLowerCase().includes(this.clientSearch.toLowerCase()) ||
-      c.company.toLowerCase().includes(this.clientSearch.toLowerCase())
+      c.nomContact.toLowerCase().includes(this.clientSearch.toLowerCase()) ||
+      c.societe.toLowerCase().includes(this.clientSearch.toLowerCase())
     );
   }
 
   selectClient(client: any) {
     this.selectedClient = client;
-    this.activity.client = `${client.firstName} ${client.lastName}`;
-    this.clientSearch = `${client.firstName} ${client.lastName}`;
+    this.activity.client = client.nomContact;
+    this.clientSearch = client.nomContact;
   }
 
   /* =======================
@@ -167,25 +151,37 @@ export class Commercial {
       return;
     }
 
-    const client = {
-      id: this.clients.length + 1,
-      ...this.newClient
+    const nameParts = this.newClient.firstName.trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    const newClientData: Client = {
+      nomContact: `${this.newClient.firstName} ${this.newClient.lastName}`.trim(),
+      email: this.newClient.email,
+      phone: this.newClient.phone,
+      societe: this.newClient.company
     };
 
-    this.clients.push(client);
-    this.selectClient(client);
-
-    this.newClient = {
-      firstName: '',
-      lastName: '',
-      company: '',
-      city: '',
-      email: '',
-      phone: '',
-      status: 'Active'
-    };
-
-    this.showClientModal = false;
+    this.clientService.create(newClientData).subscribe({
+      next: (createdClient) => {
+        this.clients.push(createdClient);
+        this.selectClient(createdClient);
+        this.newClient = {
+          firstName: '',
+          lastName: '',
+          company: '',
+          city: '',
+          email: '',
+          phone: '',
+          status: 'Active'
+        };
+        this.showClientModal = false;
+      },
+      error: (err) => {
+        console.error('Error creating client', err);
+        alert('Failed to save client');
+      }
+    });
   }
 
   /* =======================
@@ -204,8 +200,8 @@ export class Commercial {
 
     this.activities.unshift({
       date: this.activity.date,
-      client: `${this.selectedClient.firstName} ${this.selectedClient.lastName}`,
-      societe: this.selectedClient.company,
+      client: this.selectedClient.nomContact,
+      societe: this.selectedClient.societe,
       type: this.activity.type,
       statut: this.activity.statut
     });
