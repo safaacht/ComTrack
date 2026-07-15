@@ -1,0 +1,94 @@
+<div class="clients-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Clients Management</h1>
+    <p class="subtitle">Manage your clients and add new ones easily.</p>
+  </div>
+
+  <div class="content-grid">
+
+    <!--  Add Client Form -->
+    <div class="form-card">
+      <div class="card-header">
+        <h2>Add New Client</h2>
+        <span class="badge">New</span>
+      </div>
+
+      <div class="form-content">
+        <div class="input-group">
+          <label>Full Name</label>
+          <div class="input-wrapper">
+            <i class="icon">👤</i>
+            <input type="text" placeholder="e.g. John Doe" [(ngModel)]="newClient.fullName">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-wrapper">
+            <i class="icon">✉️</i>
+            <input type="email" placeholder="john@example.com" [(ngModel)]="newClient.email" [ngStyle]="{'border-color': (newClient.email && !isEmailValid) ? '#ef4444' : ''}">
+          </div>
+          <small *ngIf="newClient.email && !isEmailValid" style="color: #ef4444; font-size: 12px; margin-top: 6px; display: block;">Invalid email address.</small>
+        </div>
+
+        <div class="input-group">
+          <label>Phone Number</label>
+          <div class="input-wrapper">
+            <i class="icon">📞</i>
+            <input type="text" placeholder="+212 600 000 000" [(ngModel)]="newClient.phone">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Société (Company)</label>
+          <div class="input-wrapper">
+            <i class="icon">🏢</i>
+            <input type="text" placeholder="e.g. Acme Corp" [(ngModel)]="newClient.company">
+          </div>
+        </div>
+
+        <button class="submit-btn" (click)="saveClient()" [disabled]="!isFormValid">
+          <span>Add Client</span>
+          <i>+</i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Clients List -->
+    <div class="list-card">
+      <div class="list-header">
+        <h2>Clients Directory</h2>
+        <app-search-filter
+          placeholder="Search clients..."
+          [filters]="searchFilters"
+          (searchChange)="onSearchChange($event)"
+          (statusChange)="onStatusChange($event)"
+          (categoryChange)="onCategoryChange($event)">
+        </app-search-filter>
+      </div>
+
+      <div class="clients-list">
+        <div class="client-item" *ngFor="let c of filteredClients">
+          <div class="avatar">{{c.firstName.charAt(0)}}{{c.lastName ? c.lastName.charAt(0) : ''}}</div>
+          <div class="client-info">
+            <h3>{{c.firstName}} {{c.lastName}}</h3>
+            <p>{{c.company || 'No Company'}}</p>
+          </div>
+          <div class="client-contact">
+            <p><span>✉️</span> {{c.email || 'N/A'}}</p>
+            <p><span>📞</span> {{c.phone || 'N/A'}}</p>
+          </div>
+          <div class="client-status">
+            <span class="status-badge" [class.active]="c.status === 'Active'">{{c.status}}</span>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="filteredClients.length === 0">
+          <p>No clients found.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
