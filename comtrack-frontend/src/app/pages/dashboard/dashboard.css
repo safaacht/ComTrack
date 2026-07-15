@@ -237,3 +237,20 @@ th {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #9ca3af;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+}

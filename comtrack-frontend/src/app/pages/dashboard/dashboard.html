@@ -94,17 +94,17 @@
         <tbody>
           @for (c of paginatedCommercials; track c.id) {
             <tr>
-              <td>{{ c.firstName }} {{ c.lastName }}</td>
+              <td>{{ c.nom }} {{ c.prenom }}</td>
               <td>{{ c.email }}</td>
               <td>{{ c.phone }}</td>
               <td>
-                <span [class]="c.status === 'Active' ? 'status done' : 'status canceled'">
-                  {{ c.status }}
+                <span [class]="c.fonction === 'JUNIOR' ? 'status done' : 'status canceled'">
+                  {{ c.fonction }}
                 </span>
               </td>
               <td class="actions-cell">
                 <button class="edit" (click)="openEdit(c)">Edit</button>
-                <button class="delete" (click)="deleteCommercial(c.id)">Delete</button>
+                <button class="delete" (click)="deleteCommercial(c.id!)">Delete</button>
               </td>
             </tr>
           } @empty {
@@ -127,67 +127,172 @@
 
   @if (isAddOpen) {
     <div class="modal-overlay">
-      <div class="modal">
+      <form class="modal" #addForm="ngForm" (ngSubmit)="addCommercial()">
         <h2>Add Commercial</h2>
-        <input [(ngModel)]="newCommercial.firstName" placeholder="First Name" />
-        <input [(ngModel)]="newCommercial.lastName" placeholder="Last Name" />
-        <input [(ngModel)]="newCommercial.email" placeholder="Email" />
-        <input [(ngModel)]="newCommercial.phone" placeholder="Phone" />
-        <select [(ngModel)]="newCommercial.status">
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-        <div class="modal-actions">
-          <button class="saveButton" (click)="addCommercial()">Add</button>
-          <button class="cancelButton" (click)="isAddOpen = false">Cancel</button>
+        
+        <div class="form-group">
+          <input [(ngModel)]="newCommercial.prenom" name="prenom" #prenomAdd="ngModel" placeholder="First Name" required />
+          @if (prenomAdd.invalid && (prenomAdd.dirty || prenomAdd.touched)) {
+            <small class="error-message">First name is required.</small>
+          }
         </div>
-      </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="newCommercial.nom" name="nom" #nomAdd="ngModel" placeholder="Last Name" required />
+          @if (nomAdd.invalid && (nomAdd.dirty || nomAdd.touched)) {
+            <small class="error-message">Last name is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="newCommercial.email" name="email" #emailAdd="ngModel" type="email" placeholder="Email" required pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" />
+          @if (emailAdd.invalid && (emailAdd.dirty || emailAdd.touched)) {
+            <small class="error-message">
+              @if (emailAdd.errors?.['required']) { Email is required. }
+              @if (emailAdd.errors?.['pattern']) { Invalid email format. }
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="newCommercial.phone" name="phone" #phoneAdd="ngModel" placeholder="Phone" required pattern="^\+?[0-9\s\-]+$" />
+          @if (phoneAdd.invalid && (phoneAdd.dirty || phoneAdd.touched)) {
+            <small class="error-message">
+              @if (phoneAdd.errors?.['required']) { Phone is required. }
+              @if (phoneAdd.errors?.['pattern']) { Invalid phone format. }
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <select [(ngModel)]="newCommercial.fonction" name="fonction" #fonctionAdd="ngModel" required>
+            <option value="JUNIOR">JUNIOR</option>
+            <option value="SENIOR">SENIOR</option>
+          </select>
+          @if (fonctionAdd.invalid && (fonctionAdd.dirty || fonctionAdd.touched)) {
+            <small class="error-message">Status is required.</small>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="saveButton" [disabled]="addForm.invalid">Add</button>
+          <button type="button" class="cancelButton" (click)="isAddOpen = false">Cancel</button>
+        </div>
+      </form>
     </div>
   }
 
   @if (isEditOpen) {
     <div class="modal-overlay">
-      <div class="modal">
+      <form class="modal" #editForm="ngForm" (ngSubmit)="saveEdit()">
         <h2>Edit Commercial</h2>
-        <input [(ngModel)]="selectedCommercial.firstName" placeholder="First Name" />
-        <input [(ngModel)]="selectedCommercial.lastName" placeholder="Last Name" />
-        <input [(ngModel)]="selectedCommercial.email" placeholder="Email" />
-        <input [(ngModel)]="selectedCommercial.phone" placeholder="Phone" />
-        <select [(ngModel)]="selectedCommercial.status">
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-        <div class="modal-actions">
-          <button class="saveButton" (click)="saveEdit()">Save</button>
-          <button class="cancelButton" (click)="isEditOpen = false">Cancel</button>
+        
+        <div class="form-group">
+          <input [(ngModel)]="selectedCommercial.prenom" name="prenom" #prenomEdit="ngModel" placeholder="First Name" required />
+          @if (prenomEdit.invalid && (prenomEdit.dirty || prenomEdit.touched)) {
+            <small class="error-message">First name is required.</small>
+          }
         </div>
-      </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="selectedCommercial.nom" name="nom" #nomEdit="ngModel" placeholder="Last Name" required />
+          @if (nomEdit.invalid && (nomEdit.dirty || nomEdit.touched)) {
+            <small class="error-message">Last name is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="selectedCommercial.email" name="email" #emailEdit="ngModel" type="email" placeholder="Email" required pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" />
+          @if (emailEdit.invalid && (emailEdit.dirty || emailEdit.touched)) {
+            <small class="error-message">
+              @if (emailEdit.errors?.['required']) { Email is required. }
+              @if (emailEdit.errors?.['pattern']) { Invalid email format. }
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="selectedCommercial.phone" name="phone" #phoneEdit="ngModel" placeholder="Phone" required pattern="^\+?[0-9\s\-]+$" />
+          @if (phoneEdit.invalid && (phoneEdit.dirty || phoneEdit.touched)) {
+            <small class="error-message">
+              @if (phoneEdit.errors?.['required']) { Phone is required. }
+              @if (phoneEdit.errors?.['pattern']) { Invalid phone format. }
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <select [(ngModel)]="selectedCommercial.fonction" name="fonction" #fonctionEdit="ngModel" required>
+            <option value="JUNIOR">JUNIOR</option>
+            <option value="SENIOR">SENIOR</option>
+          </select>
+          @if (fonctionEdit.invalid && (fonctionEdit.dirty || fonctionEdit.touched)) {
+            <small class="error-message">Status is required.</small>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="saveButton" [disabled]="editForm.invalid">Save</button>
+          <button type="button" class="cancelButton" (click)="isEditOpen = false">Cancel</button>
+        </div>
+      </form>
     </div>
   }
 
   @if (isActivityAddOpen) {
     <div class="modal-overlay">
-      <div class="modal">
+      <form class="modal" #activityForm="ngForm" (ngSubmit)="addActivity()">
         <h2>Add Activity</h2>
-        <input [(ngModel)]="newActivity.client" placeholder="Client Name" />
-        <input [(ngModel)]="newActivity.society" placeholder="Society" />
-        <select [(ngModel)]="newActivity.type" class="modal-select">
-          <option value="Call">Call</option>
-          <option value="Visit">Visit</option>
-          <option value="Email">Email</option>
-          <option value="Meeting">Meeting</option>
-        </select>
-        <input [(ngModel)]="newActivity.date" type="date" />
-        <select [(ngModel)]="newActivity.status" (change)="updateActivityStatusClass()" class="modal-select">
-          <option value="Pending">Pending</option>
-          <option value="Done">Done</option>
-          <option value="Canceled">Canceled</option>
-        </select>
-        <div class="modal-actions">
-          <button class="saveButton" (click)="addActivity()">Add</button>
-          <button class="cancelButton" (click)="isActivityAddOpen = false">Cancel</button>
+        
+        <div class="form-group">
+          <input [(ngModel)]="newActivity.client" name="client" #client="ngModel" placeholder="Client Name" required />
+          @if (client.invalid && (client.dirty || client.touched)) {
+            <small class="error-message">Client name is required.</small>
+          }
         </div>
-      </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="newActivity.society" name="society" #society="ngModel" placeholder="Society" required />
+          @if (society.invalid && (society.dirty || society.touched)) {
+            <small class="error-message">Society is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <select [(ngModel)]="newActivity.type" name="type" #type="ngModel" class="modal-select" required>
+            <option value="Call">Call</option>
+            <option value="Visit">Visit</option>
+            <option value="Email">Email</option>
+            <option value="Meeting">Meeting</option>
+          </select>
+          @if (type.invalid && (type.dirty || type.touched)) {
+            <small class="error-message">Type is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <input [(ngModel)]="newActivity.date" name="date" #date="ngModel" type="date" required />
+          @if (date.invalid && (date.dirty || date.touched)) {
+            <small class="error-message">Date is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <select [(ngModel)]="newActivity.status" name="status" #status="ngModel" (change)="updateActivityStatusClass()" class="modal-select" required>
+            <option value="Pending">Pending</option>
+            <option value="Done">Done</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+          @if (status.invalid && (status.dirty || status.touched)) {
+            <small class="error-message">Status is required.</small>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="saveButton" [disabled]="activityForm.invalid">Add</button>
+          <button type="button" class="cancelButton" (click)="isActivityAddOpen = false">Cancel</button>
+        </div>
+      </form>
     </div>
   }
 

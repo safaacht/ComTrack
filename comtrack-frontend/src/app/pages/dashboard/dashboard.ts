@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommercialService } from '../../services/commercial.service';
+import { Commercial } from '../../models/commercial';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,16 +13,14 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  constructor(private router: Router) {}
+  constructor(
+  private router: Router,
+  private commercialService: CommercialService,
+  private cdr: ChangeDetectorRef
+  ){}
 
   // Commercials data
-  commercials = [
-    { id: 1, firstName: 'Ahmed', lastName: 'Bennani', email: 'ahmed@test.com', phone: '0600000000', status: 'Active' },
-    { id: 2, firstName: 'Sara', lastName: 'Alaoui', email: 'sara@test.com', phone: '0611111111', status: 'Inactive' },
-    { id: 3, firstName: 'Youssef', lastName: 'Naciri', email: 'youssef@test.com', phone: '0622222222', status: 'Active' },
-    { id: 4, firstName: 'Kenza', lastName: 'Idrissi', email: 'kenza@test.com', phone: '0633333333', status: 'Active' },
-    { id: 5, firstName: 'Leila', lastName: 'Radi', email: 'leila@test.com', phone: '0644444444', status: 'Active' }
-  ];
+  commercials: Commercial[] = [];
 
   // Activities data
   activities = [
@@ -35,7 +35,28 @@ export class Dashboard {
   isEditOpen = false;
   isAddOpen = false;
 
-  newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+ newCommercial: Commercial = {
+  nom: '',
+  prenom: '',
+  email: '',
+  phone: '',
+  fonction: 'JUNIOR'
+};
+
+  ngOnInit() {
+  this.loadCommercials();
+}
+
+  loadCommercials() {
+  this.commercialService.getAll().subscribe({
+    next: (data) => {
+      console.log("Commercials:", data);
+      this.commercials = data;
+      this.cdr.markForCheck();
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   // Commercials Pagination
   currentPage = 1;
@@ -81,17 +102,26 @@ export class Dashboard {
 
   openAdd() {
     this.isAddOpen = true;
-    this.newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+    this.newCommercial = { id: 0, prenom: '', nom: '', email: '', phone: '', fonction: 'JUNIOR' };
   }
 
   addCommercial() {
-    const newId = this.commercials.length
-      ? Math.max(...this.commercials.map(c => c.id)) + 1
-      : 1;
-
-    this.commercials.unshift({ ...this.newCommercial, id: newId });
-    this.isAddOpen = false;
-    this.newCommercial = { id: 0, firstName: '', lastName: '', email: '', phone: '', status: 'Active' };
+    this.commercialService.create(this.newCommercial).subscribe({
+      next: (data) => {
+        this.commercials.unshift(data);
+        this.isAddOpen = false;
+        this.newCommercial = { prenom: '', nom: '', email: '', phone: '', fonction: 'JUNIOR' };
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Error adding commercial:', err);
+        if (err.status === 500) {
+          alert('Failed to add commercial: A commercial with this phone number might already exist! Please try a unique phone number.');
+        } else {
+          alert('Failed to add commercial. Check console for details.');
+        }
+      }
+    });
   }
 
   openEdit(commercial: any) {
@@ -100,17 +130,42 @@ export class Dashboard {
   }
 
   saveEdit() {
-    const index = this.commercials.findIndex(c => c.id === this.selectedCommercial.id);
-    if (index !== -1) {
-      this.commercials[index] = this.selectedCommercial;
-    }
-    this.isEditOpen = false;
+    if (!this.selectedCommercial.id) return;
+    this.commercialService.update(this.selectedCommercial.id, this.selectedCommercial).subscribe({
+      next: (updatedCommercial) => {
+        const index = this.commercials.findIndex(c => c.id === updatedCommercial.id);
+        if (index !== -1) {
+          this.commercials[index] = updatedCommercial;
+        }
+        this.isEditOpen = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Error updating commercial:', err);
+        if (err.status === 500) {
+          alert('Failed to update commercial: A commercial with this phone number might already exist!');
+        } else {
+          alert('Failed to update commercial. Check console for details.');
+        }
+      }
+    });
   }
 
   deleteCommercial(id: number) {
-    this.commercials = this.commercials.filter(c => c.id !== id);
-    if (this.currentPage > this.totalPages && this.totalPages > 0) {
-      this.currentPage = this.totalPages;
+    if (confirm("Are you sure you want to delete this commercial?")) {
+      this.commercialService.delete(id).subscribe({
+        next: () => {
+          this.commercials = this.commercials.filter(c => c.id !== id);
+          if (this.currentPage > this.totalPages && this.totalPages > 0) {
+            this.currentPage = this.totalPages;
+          }
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error('Error deleting commercial:', err);
+          alert('Failed to delete commercial. Check console for details.');
+        }
+      });
     }
   }
 
