@@ -1,0 +1,256 @@
+/* MAIN LAYOUT */
+.dashboard {
+  padding: 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header h1 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.header p {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* STATS CARDS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #2563eb;
+}
+
+.card p {
+  margin: 5px 0 0;
+  color: #64748b;
+}
+
+/* CONTENT GRID */
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* TABLE */
+.table-section {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #f1f5f9;
+}
+
+/* STATUS BADGES */
+.done {
+  color: green;
+  font-weight: bold;
+}
+
+.pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.canceled {
+  color: red;
+  font-weight: bold;
+}
+
+/* ACTIONS */
+.actions {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 10px;
+  border: none;
+  background: #021b42;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.actions button:hover {
+  background: #334155;
+}
+
+/* COMMERCIALS & MODALS & PAGINATION */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn:hover {
+  background: #1d4ed8;
+}
+
+.commercials-section {
+  grid-column: 1 / -1; 
+  margin-top: 10px;
+}
+
+.edit {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 90%;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+}
+
+
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.saveButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #9ca3af;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+}

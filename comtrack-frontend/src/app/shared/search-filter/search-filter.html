@@ -1,0 +1,32 @@
+<div class="search-filter">
+
+  <input
+    type="text"
+    [placeholder]="placeholder"
+    [(ngModel)]="search"
+    (ngModelChange)="onSearch()"
+  />
+
+  <select
+    [(ngModel)]="status"
+    (ngModelChange)="onStatus()">
+    <option>All Status</option>
+    <option>JUNIOR</option>
+    <option>SENIOR</option>
+  </select>
+
+  <select
+    [(ngModel)]="category"
+    (ngModelChange)="onCategory()">
+
+    @for (filter of filters; track filter) {
+      <option [value]="filter">{{ filter }}</option>
+    }
+
+  </select>
+
+  <button style="background-color:#ef4444;color:white;border:none">
+    + Add Client
+  </button>
+
+</div>
