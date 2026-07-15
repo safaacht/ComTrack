@@ -104,13 +104,17 @@ export class Dashboard {
   }
 
   addCommercial() {
-    const newId = this.commercials.length
-      ? Math.max(...this.commercials.map(c => c.id ??0))
-      : 1;
-
-    this.commercials.unshift({ ...this.newCommercial, id: newId });
-    this.isAddOpen = false;
-    this.newCommercial = {id: 0,prenom: '',nom: '',email: '',phone: '',fonction: 'JUNIOR' };
+    this.commercialService.create(this.newCommercial).subscribe({
+      next: (data) => {
+        this.commercials.unshift(data);
+        this.isAddOpen = false;
+        this.newCommercial = { prenom: '', nom: '', email: '', phone: '', fonction: 'JUNIOR' };
+      },
+      error: (err) => {
+        console.error('Error adding commercial:', err);
+        alert('Failed to add commercial. Check console for details.');
+      }
+    });
   }
 
   openEdit(commercial: any) {
@@ -119,17 +123,36 @@ export class Dashboard {
   }
 
   saveEdit() {
-    const index = this.commercials.findIndex(c => c.id === this.selectedCommercial.id);
-    if (index !== -1) {
-      this.commercials[index] = this.selectedCommercial;
-    }
-    this.isEditOpen = false;
+    if (!this.selectedCommercial.id) return;
+    this.commercialService.update(this.selectedCommercial.id, this.selectedCommercial).subscribe({
+      next: (updatedCommercial) => {
+        const index = this.commercials.findIndex(c => c.id === updatedCommercial.id);
+        if (index !== -1) {
+          this.commercials[index] = updatedCommercial;
+        }
+        this.isEditOpen = false;
+      },
+      error: (err) => {
+        console.error('Error updating commercial:', err);
+        alert('Failed to update commercial. Check console for details.');
+      }
+    });
   }
 
   deleteCommercial(id: number) {
-    this.commercials = this.commercials.filter(c => c.id !== id);
-    if (this.currentPage > this.totalPages && this.totalPages > 0) {
-      this.currentPage = this.totalPages;
+    if (confirm("Are you sure you want to delete this commercial?")) {
+      this.commercialService.delete(id).subscribe({
+        next: () => {
+          this.commercials = this.commercials.filter(c => c.id !== id);
+          if (this.currentPage > this.totalPages && this.totalPages > 0) {
+            this.currentPage = this.totalPages;
+          }
+        },
+        error: (err) => {
+          console.error('Error deleting commercial:', err);
+          alert('Failed to delete commercial. Check console for details.');
+        }
+      });
     }
   }
 
