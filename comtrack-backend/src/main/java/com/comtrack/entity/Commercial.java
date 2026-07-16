@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
 import com.comtrack.entity.Fonction;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="commerciaux")
@@ -31,6 +32,7 @@ public class Commercial {
 
     //relations
     @OneToMany(mappedBy="commercial")
+    @JsonIgnore
     private List<Client> clients;
 
     @OneToOne(mappedBy="commercial")

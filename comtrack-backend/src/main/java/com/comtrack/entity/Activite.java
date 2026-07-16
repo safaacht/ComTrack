@@ -3,6 +3,7 @@ package com.comtrack.entity;
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="activites")
@@ -31,6 +32,7 @@ public class Activite {
 
     @ManyToOne
     @JoinColumn(name="client_id")
+    @JsonBackReference
     private Client client;
 
 

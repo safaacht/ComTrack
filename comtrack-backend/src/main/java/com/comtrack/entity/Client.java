@@ -3,6 +3,8 @@ package com.comtrack.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="clients")
@@ -32,9 +34,11 @@ public class Client {
     //relations
     @ManyToOne
     @JoinColumn(name = "commercial_id")
+    @JsonIgnore
     private Commercial commercial;
 
     @OneToMany(mappedBy="client")
+    @JsonManagedReference
     private List <Activite> activites;
 
 
@@ -94,7 +98,7 @@ public class Client {
 
     public void setCommercial(Commercial commercial){this.commercial=commercial;}
 
-    public  List<Activite>  getActivite(){return activites;}
+    public  List<Activite>  getActivites(){return activites;}
 
-    public void setActivite( List<Activite> activites ){this.activites=activites;}
+    public void setActivites( List<Activite> activites ){this.activites=activites;}
 }
